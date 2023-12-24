@@ -6,6 +6,7 @@ void main() {
   runApp(MyApp());
 }
 
+//app starts running
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -42,6 +43,13 @@ class MyAppState extends ChangeNotifier {
     } else {
       favorites.add(current);
     }
+    notifyListeners();
+  }
+
+  void removePair(
+    WordPair pair,
+  ) {
+    favorites.remove(pair);
     notifyListeners();
   }
 }
@@ -126,7 +134,12 @@ class FavoritesPage extends StatelessWidget {
         ),
         for (var pair in appState.favorites)
           ListTile(
-            leading: Icon(Icons.favorite),
+            leading: IconButton(
+              onPressed: () {
+                appState.removePair(pair);
+              },
+              icon: Icon(Icons.delete_outline),
+            ),
             title: Text(pair.asLowerCase),
           )
       ],
