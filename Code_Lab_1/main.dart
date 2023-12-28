@@ -27,16 +27,21 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//all states of the app
 class MyAppState extends ChangeNotifier {
+  //the current word pair shown on the big card
   var current = WordPair.random();
 
+  //generates a new word pair
   void getNext() {
     current = WordPair.random();
     notifyListeners();
   }
 
+  //list of the word pairs which the user marked as favorite
   var favorites = <WordPair>[];
 
+  //toggle favourite for a word pair
   void toggleFavorite() {
     if (favorites.contains(current)) {
       favorites.remove(current);
@@ -46,6 +51,7 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
+  //remove favorite mark from a word pair
   void removePair(
     WordPair pair,
   ) {
@@ -54,17 +60,21 @@ class MyAppState extends ChangeNotifier {
   }
 }
 
+//home page
 class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //index of pages selected on the navigation panel
   var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     Widget page;
+
+    //switches the page based on which navigation icon is selected
     switch (selectedIndex) {
       case 0:
         page = GeneratorPage();
@@ -76,13 +86,15 @@ class _MyHomePageState extends State<MyHomePage> {
         throw UnimplementedError('no widget for $selectedIndex');
     }
 
+    //navigation panel
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         body: Row(
           children: [
             SafeArea(
               child: NavigationRail(
-                extended: constraints.maxWidth >= 600,
+                extended: constraints.maxWidth >=
+                    600, //extend the navigation panel if there is enought space
                 destinations: [
                   NavigationRailDestination(
                     icon: Icon(Icons.home),
@@ -93,6 +105,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     label: Text('Favorites'),
                   ),
                 ],
+                //changes the selected index
                 selectedIndex: selectedIndex,
                 onDestinationSelected: (value) {
                   setState(() {
